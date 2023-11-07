@@ -1,0 +1,28 @@
+@import "_variables.scss";
+
+.nav {
+  background-color: $third-color;
+  display: flex;
+  align-items: center;
+
+  .logo {
+    padding: 3rem;
+    width: 23rem;
+  }
+
+  &__list {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20rem;
+    list-style: none;
+    font-size: $default-size;
+    font-weight: 400;
+    padding: $default-size;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: $second-color;
+  }
+}
