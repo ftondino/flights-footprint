@@ -1,5 +1,39 @@
-<div class="results">
-  <div><span></span><span></span><span></span></div>
-  <div></div>
-  <p>results-box works!</p>
+<div *ngIf="results" class="results">
+  <div class="data-container">
+    <div class="data">
+      <span class="data__code">{{ results.partenzaData.code }}</span>
+      <span class="data__country"
+        >{{ results.partenzaData.city }},
+        {{ results.partenzaData.country }}</span
+      >
+    </div>
+    <span class="data__divider"> ----------------------- </span>
+    <div class="data">
+      <span class="data__code">{{ results.destinazioneData.code }}</span>
+      <span class="data__country"
+        >{{ results.destinazioneData.city }},
+        {{ results.destinazioneData.country }}</span
+      >
+    </div>
+  </div>
+
+  <div>
+    <div class="footprint">
+      <div class="footprint__container">
+        <span class="footprint__title">Emissioni per passeggero</span>
+        <span class="footprint__data"
+          >{{ results.footprint }}
+          <span class="footprint__data--unit">kg CO2e/persona</span></span
+        >
+      </div>
+
+      <div class="footprint__container">
+        <span class="footprint__title">Emissioni totali</span>
+        <span class="footprint__data"
+          >{{ results.footprint * results.passeggeri }}
+          <span class="footprint__data--unit">kg CO2e</span></span
+        >
+      </div>
+    </div>
+  </div>
 </div>

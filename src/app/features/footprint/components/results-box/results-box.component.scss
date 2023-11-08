@@ -1,8 +1,77 @@
+@import "_variables.scss";
+
 .results {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 0);
-  max-width: 50rem;
-  background-color: aqua;
+  width: 85rem;
+  border: 0.1rem solid #e0e2e7;
+  border-radius: 2px;
+  background-color: $third-color;
+  padding: 2rem 3rem 2rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.data-container {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  width: 75%;
+  padding: 2rem;
+  .data {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    &__code {
+      font-size: 4.5rem;
+      font-weight: 500;
+      color: $first-color;
+    }
+    &__country {
+      color: $second-color;
+      font-size: 1.1rem;
+    }
+    &__divider {
+      letter-spacing: 0.2rem;
+      padding-bottom: 2rem;
+      color: $second-color;
+    }
+  }
+}
+
+.footprint {
+  display: flex;
+  flex-direction: column;
+  border-left: 0.1rem solid #e0e2e7;
+  &__container {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: space-around;
+    padding: 1rem 3rem;
+  }
+
+  &__title {
+    color: $first-color;
+    display: inline-block;
+    width: 35%;
+
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  &__data {
+    font-size: 4.5rem;
+    font-weight: 500;
+    color: $first-color;
+    display: flex;
+    flex-direction: column;
+    &--unit {
+      color: $second-color;
+      font-size: 1.1rem;
+      padding: 0.3rem;
+    }
+  }
 }

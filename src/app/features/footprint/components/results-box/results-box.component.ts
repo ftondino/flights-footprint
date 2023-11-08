@@ -11,8 +11,10 @@ export class ResultsBoxComponent implements OnInit {
   constructor(private footprintService: FootprintService) {}
   ngOnInit() {
     this.footprintService.currentTravel.subscribe((data) => {
-      this.results = data;
-      console.log('results', this.results);
+      if (data) {
+        this.results = data;
+        console.log('results', this.results);
+      }
     });
   }
 }

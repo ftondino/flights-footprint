@@ -4,7 +4,7 @@ import View from 'ol/View';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { LineString, Point } from 'ol/geom';
-import { Stroke, Style } from 'ol/style';
+import { Circle, Fill, Stroke, Style } from 'ol/style';
 import Feature from 'ol/Feature';
 import * as olProj from 'ol/proj';
 import { Coordinate } from 'ol/coordinate';
@@ -44,36 +44,36 @@ export class MapComponent implements OnInit {
           { x: data.destinazioneData.lon, y: data.destinazioneData.lat }
         );
 
-        let lineString = new LineString([]);
+        let animLineString = new LineString([]);
+        let points: Coordinate[] = [];
         let n = 100;
 
         let arcLine = arcGenerator.Arc(n);
-        if (arcLine.geometries.length === 1) {
-          let lineCoords = arcLine.geometries[0].coords;
-          for (let i = 0; i < lineCoords.length; i++) {
-            lineString.appendCoordinate(olProj.fromLonLat(lineCoords[i]));
-          }
+        let lineCoords: string | any[] = [];
+        if (arcLine.geometries.length === 1 && arcLine.geometries[0].coords) {
+          lineCoords = arcLine.geometries[0].coords;
         }
 
-        let lineFeature = new Feature({
-          geometry: lineString,
+        let arcFeature = new Feature({
+          geometry: animLineString,
           finished: false,
         });
 
-        let lineLayer = new VectorLayer({
+        let arcLayer = new VectorLayer({
           source: new VectorSource({
-            features: [lineFeature],
+            features: [arcFeature],
           }),
           style: new Style({
             stroke: new Stroke({
               color: '#010C80',
-              width: 3,
-              lineDash: [10, 10],
+              width: 1.5,
+              lineDash: [2, 5],
             }),
           }),
         });
 
-        map.addLayer(lineLayer);
+        map.addLayer(arcLayer);
+
         let extent = boundingExtent([
           olProj.fromLonLat([data.partenzaData.lon, data.partenzaData.lat]),
           olProj.fromLonLat([
@@ -84,8 +84,6 @@ export class MapComponent implements OnInit {
         map
           .getView()
           .fit(extent, { padding: [50, 50, 50, 50], duration: 2000 });
-        let points: Coordinate[] = [];
-        let line = new LineString(points);
 
         setTimeout(() => {
           let t = 0;
@@ -93,18 +91,18 @@ export class MapComponent implements OnInit {
             if (t > 1) {
               clearInterval(interval);
             } else {
-              let lat =
-                data.partenzaData.lat * (1 - t) +
-                data.destinazioneData.lat * t +
-                Math.sin(Math.PI * t) * 0.1;
-              let lon =
-                data.partenzaData.lon * (1 - t) + data.destinazioneData.lon * t;
-              let coord: Coordinate = olProj.fromLonLat([lon, lat]) as [
+              let index = Math.floor(t * lineCoords.length);
+              let coord: Coordinate = olProj.fromLonLat(lineCoords[index]) as [
                 number,
                 number
               ];
               points.push(coord);
-              line.setCoordinates(points);
+              animLineString.setCoordinates(points);
+              let source = arcLayer.getSource();
+              if (source) {
+                source.clear();
+                source.addFeature(new Feature(animLineString));
+              }
               t += 0.02;
             }
           }, 50);
@@ -124,6 +122,16 @@ export class MapComponent implements OnInit {
             ])
           ),
         });
+
+        let markerStyle = new Style({
+          image: new Circle({
+            radius: 5,
+            fill: new Fill({ color: '#010C80' }),
+          }),
+        });
+
+        startMarker.setStyle(markerStyle);
+        endMarker.setStyle(markerStyle);
 
         let markerLayer = new VectorLayer({
           source: new VectorSource({
