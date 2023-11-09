@@ -8,6 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [NavComponent, FooterComponent],
   imports: [CommonModule, HttpClientModule, RouterModule],
-  exports: [NavComponent],
+  exports: [NavComponent, FooterComponent],
 })
 export class CoreModule {}

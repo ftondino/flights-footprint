@@ -41,4 +41,8 @@ export class FootprintService {
       map((airports) => airports.find((airport) => airport.code === code))
     );
   }
+
+  resetTravelData() {
+    this.travelData.next(null);
+  }
 }

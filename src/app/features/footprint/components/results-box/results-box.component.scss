@@ -23,7 +23,7 @@
   .data {
     display: flex;
     flex-direction: column;
-    width: 20%;
+    width: 23%;
     &__code {
       font-size: 4.5rem;
       font-weight: 500;
@@ -74,4 +74,11 @@
       padding: 0.3rem;
     }
   }
+}
+
+button {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

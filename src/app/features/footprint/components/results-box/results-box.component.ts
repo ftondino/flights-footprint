@@ -17,4 +17,9 @@ export class ResultsBoxComponent implements OnInit {
       }
     });
   }
+
+  newSearch() {
+    this.footprintService.resetTravelData();
+    this.results = null;
+  }
 }

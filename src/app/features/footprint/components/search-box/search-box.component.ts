@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -18,11 +24,13 @@ export class SearchBoxComponent implements OnInit {
   dataForm: FormGroup;
   filteredAirports: { [key: string]: any[] } = {};
   selectedAirports: { [key: string]: any } = {};
+  @ViewChild('myForm') myForm!: ElementRef;
 
   constructor(
     private formBuilder: FormBuilder,
     private httpRequest: HttpRequestService,
-    private footprintService: FootprintService
+    private footprintService: FootprintService,
+    private renderer: Renderer2
   ) {
     this.dataForm = this.formBuilder.group({
       partenza: new FormControl('', Validators.required),
@@ -79,5 +87,6 @@ export class SearchBoxComponent implements OnInit {
         };
         this.footprintService.updateTravel(data, additionalData);
       });
+    this.renderer.addClass(this.myForm.nativeElement, 'animation');
   }
 }

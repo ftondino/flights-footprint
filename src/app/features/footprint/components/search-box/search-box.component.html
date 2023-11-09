@@ -1,4 +1,4 @@
-<form class="form" [formGroup]="dataForm">
+<form #myForm class="form" [formGroup]="dataForm">
   <div class="form__inputs">
     <div class="drop-container">
       <label class="form__label" for="partenza">Partenza:</label>
@@ -83,7 +83,12 @@
       </div>
     </div>
   </div>
-  <button type="submit" [disabled]="!dataForm.valid" (click)="onSubmit()">
+  <button
+    class="submit"
+    type="submit"
+    [disabled]="!dataForm.valid"
+    (click)="onSubmit()"
+  >
     Calcola
   </button>
 </form>
