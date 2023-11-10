@@ -5,12 +5,10 @@ import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { LineString, Point } from 'ol/geom';
 import { Circle, Fill, Stroke, Style } from 'ol/style';
-import Feature from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import * as olProj from 'ol/proj';
-import { Coordinate } from 'ol/coordinate';
 import { boundingExtent } from 'ol/extent';
-
-import * as arc from 'arc';
+import { Text as TextStyle } from 'ol/style';
 
 import { FootprintService } from '../../services/footprint.service';
 
@@ -20,10 +18,12 @@ import { FootprintService } from '../../services/footprint.service';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
+  map: Map | undefined;
+
   constructor(private footprintService: FootprintService) {}
 
   ngOnInit() {
-    const map = new Map({
+    this.map = new Map({
       target: 'map',
       layers: [
         new TileLayer({
@@ -32,36 +32,45 @@ export class MapComponent implements OnInit {
       ],
       view: new View({
         center: olProj.fromLonLat([12.8333, 42.8333]),
-        zoom: 2,
+        zoom: 1,
       }),
       controls: [],
     });
 
     this.footprintService.currentTravel.subscribe((data) => {
+      console.log(data);
       if (data) {
-        let arcGenerator = new arc.GreatCircle(
-          { x: data.partenzaData.lon, y: data.partenzaData.lat },
-          { x: data.destinazioneData.lon, y: data.destinazioneData.lat }
-        );
+        let start = olProj.fromLonLat([
+          data.partenzaData.lon,
+          data.partenzaData.lat,
+        ]);
+        let end = olProj.fromLonLat([
+          data.destinazioneData.lon,
+          data.destinazioneData.lat,
+        ]);
 
-        let animLineString = new LineString([]);
-        let points: Coordinate[] = [];
-        let n = 100;
+        let points = [start];
+        let numPoints = 100;
 
-        let arcLine = arcGenerator.Arc(n);
-        let lineCoords: string | any[] = [];
-        if (arcLine.geometries.length === 1 && arcLine.geometries[0].coords) {
-          lineCoords = arcLine.geometries[0].coords;
+        for (let i = 1; i <= numPoints; i++) {
+          let t = i / numPoints;
+          let interpolatedLon = start[0] + t * (end[0] - start[0]);
+          let interpolatedLat = start[1] + t * (end[1] - start[1]);
+          points.push([interpolatedLon, interpolatedLat]);
         }
 
-        let arcFeature = new Feature({
+        points.push(end);
+
+        let animLineString = new LineString([start]);
+
+        let lineFeature = new Feature({
           geometry: animLineString,
           finished: false,
         });
 
-        let arcLayer = new VectorLayer({
+        let lineLayer = new VectorLayer({
           source: new VectorSource({
-            features: [arcFeature],
+            features: [lineFeature],
           }),
           style: new Style({
             stroke: new Stroke({
@@ -72,66 +81,70 @@ export class MapComponent implements OnInit {
           }),
         });
 
-        map.addLayer(arcLayer);
+        this.map?.addLayer(lineLayer);
 
-        let extent = boundingExtent([
-          olProj.fromLonLat([data.partenzaData.lon, data.partenzaData.lat]),
-          olProj.fromLonLat([
-            data.destinazioneData.lon,
-            data.destinazioneData.lat,
-          ]),
-        ]);
-        map
-          .getView()
+        let extent = boundingExtent([start, end]);
+        this.map
+          ?.getView()
           .fit(extent, { padding: [50, 50, 50, 50], duration: 2000 });
 
         setTimeout(() => {
           let t = 0;
           let interval = setInterval(() => {
-            if (t > 1) {
+            if (t > points.length - 1) {
               clearInterval(interval);
             } else {
-              let index = Math.floor(t * lineCoords.length);
-              let coord: Coordinate = olProj.fromLonLat(lineCoords[index]) as [
-                number,
-                number
-              ];
-              points.push(coord);
-              animLineString.setCoordinates(points);
-              let source = arcLayer.getSource();
+              animLineString.appendCoordinate(points[t]);
+              let source = lineLayer.getSource();
               if (source) {
                 source.clear();
                 source.addFeature(new Feature(animLineString));
               }
-              t += 0.02;
+              t += 1;
             }
           }, 50);
         }, 2000);
 
         let startMarker = new Feature({
-          geometry: new Point(
-            olProj.fromLonLat([data.partenzaData.lon, data.partenzaData.lat])
-          ),
+          geometry: new Point(start),
         });
 
         let endMarker = new Feature({
-          geometry: new Point(
-            olProj.fromLonLat([
-              data.destinazioneData.lon,
-              data.destinazioneData.lat,
-            ])
-          ),
+          geometry: new Point(end),
         });
 
-        let markerStyle = new Style({
-          image: new Circle({
-            radius: 5,
-            fill: new Fill({ color: '#010C80' }),
-          }),
-        });
+        let markerStyle = function (feature: FeatureLike): Style {
+          return new Style({
+            image: new Circle({
+              radius: 5,
+              fill: new Fill({ color: '#010C80' }),
+            }),
+            text: new TextStyle({
+              text: feature.get('name'),
+              offsetY: -20,
+              fill: new Fill({
+                color: '#010C80',
+              }),
+              stroke: new Stroke({
+                color: '#fff',
+                width: 2,
+              }),
+              font: '13px Calibri,sans-serif',
+            }),
+          });
+        };
 
-        startMarker.setStyle(markerStyle);
-        endMarker.setStyle(markerStyle);
+        startMarker.set(
+          'name',
+          `${data.partenzaData.city},${data.partenzaData.country}`
+        );
+        startMarker.setStyle(markerStyle(startMarker));
+
+        endMarker.set(
+          'name',
+          `${data.destinazioneData.city},${data.destinazioneData.country}`
+        );
+        endMarker.setStyle(markerStyle(endMarker));
 
         let markerLayer = new VectorLayer({
           source: new VectorSource({
@@ -139,8 +152,29 @@ export class MapComponent implements OnInit {
           }),
         });
 
-        map.addLayer(markerLayer);
+        this.map?.addLayer(markerLayer);
       }
     });
+
+    this.footprintService.resetMap.subscribe(() => {
+      this.reset();
+    });
+  }
+
+  reset() {
+    this.map
+      ?.getLayers()
+      .getArray()
+      .slice()
+      .forEach((layer) => this.map?.removeLayer(layer));
+
+    this.map?.addLayer(
+      new TileLayer({
+        source: new OSM(),
+      })
+    );
+
+    this.map?.getView().setCenter(olProj.fromLonLat([12.8333, 42.8333]));
+    this.map?.getView().setZoom(1);
   }
 }

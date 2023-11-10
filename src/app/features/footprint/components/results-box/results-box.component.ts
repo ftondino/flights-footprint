@@ -13,13 +13,12 @@ export class ResultsBoxComponent implements OnInit {
     this.footprintService.currentTravel.subscribe((data) => {
       if (data) {
         this.results = data;
-        console.log('results', this.results);
       }
     });
   }
 
   newSearch() {
     this.footprintService.resetTravelData();
-    this.results = null;
+    this.results = '';
   }
 }

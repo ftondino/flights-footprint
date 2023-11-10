@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 import { HttpRequestService } from './http-request.service';
 
 @Injectable({
@@ -10,6 +10,8 @@ export class FootprintService {
   currentTravel = this.travelData.asObservable();
   private airportsSource = new BehaviorSubject<any[]>([]);
   airportsData$ = this.airportsSource.asObservable();
+  resetSearchBox = new Subject<void>();
+  resetMap = new Subject<void>();
 
   constructor(private httpRequest: HttpRequestService) {
     this.loadAirportsData();
@@ -43,6 +45,7 @@ export class FootprintService {
   }
 
   resetTravelData() {
-    this.travelData.next(null);
+    this.resetSearchBox.next();
+    this.resetMap.next();
   }
 }

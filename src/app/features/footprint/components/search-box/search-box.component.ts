@@ -36,13 +36,30 @@ export class SearchBoxComponent implements OnInit {
       partenza: new FormControl('', Validators.required),
       destinazione: new FormControl('', Validators.required),
       classe: new FormControl('', Validators.required),
-      passeggeri: new FormControl('', Validators.required),
+      passeggeri: new FormControl(1, Validators.required),
     });
   }
 
   ngOnInit(): void {
     this.setupAutocomplete('partenza');
     this.setupAutocomplete('destinazione');
+    this.footprintService.resetSearchBox.subscribe(() => {
+      this.reset();
+    });
+  }
+
+  increment() {
+    this.dataForm.controls['passeggeri'].setValue(
+      this.dataForm.controls['passeggeri'].value + 1
+    );
+  }
+
+  decrement() {
+    if (this.dataForm.controls['passeggeri'].value > 1) {
+      this.dataForm.controls['passeggeri'].setValue(
+        this.dataForm.controls['passeggeri'].value - 1
+      );
+    }
   }
 
   setupAutocomplete(field: string) {
@@ -68,10 +85,10 @@ export class SearchBoxComponent implements OnInit {
   selectAirport(field: string, airport: any) {
     this.selectedAirports[field] = airport;
     this.dataForm?.get(field)?.setValue(airport.code);
+    this.filteredAirports[field] = [];
   }
 
   onSubmit() {
-    console.log(this.dataForm.value);
     this.httpRequest
       .footprintData(
         this.dataForm.value.partenza,
@@ -79,7 +96,6 @@ export class SearchBoxComponent implements OnInit {
         this.dataForm.value.classe
       )
       .subscribe((data) => {
-        console.log(data);
         const additionalData = {
           passeggeri: this.dataForm.value.passeggeri,
           partenzaData: this.selectedAirports['partenza'],
@@ -88,5 +104,15 @@ export class SearchBoxComponent implements OnInit {
         this.footprintService.updateTravel(data, additionalData);
       });
     this.renderer.addClass(this.myForm.nativeElement, 'animation');
+  }
+
+  reset() {
+    this.dataForm.patchValue({
+      partenza: '',
+      destinazione: '',
+      classe: '',
+      passeggeri: '',
+    });
+    this.renderer.removeClass(this.myForm.nativeElement, 'animation');
   }
 }

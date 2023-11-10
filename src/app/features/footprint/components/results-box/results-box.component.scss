@@ -1,6 +1,5 @@
 @import "_variables.scss";
-
-.results {
+mat-expansion-panel {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -9,6 +8,17 @@
   border: 0.1rem solid #e0e2e7;
   border-radius: 2px;
   background-color: $third-color;
+  padding: 1.5rem;
+  &:not(.mat-expanded) {
+    box-shadow: none;
+  }
+}
+
+.mat-expansion-panel {
+  box-shadow: none !important;
+}
+
+.results {
   padding: 2rem 3rem 2rem;
   display: flex;
   align-items: flex-start;
@@ -78,7 +88,6 @@
 
 button {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 0;
+  transform: translate(0%, -70%);
 }

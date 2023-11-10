@@ -9,6 +9,7 @@
         name="partenza"
         formControlName="partenza"
         required
+        autocomplete="off"
       />
       <div
         class="dropdown"
@@ -35,6 +36,7 @@
         name="destinazione"
         formControlName="destinazione"
         required
+        autocomplete="off"
       />
       <div
         class="dropdown"
@@ -70,20 +72,26 @@
     <div class="passengers">
       <label class="form__label" for="passeggeri">Passeggeri:</label>
       <div class="passengers__content">
-        <button type="button">-</button>
+        <button class="passengers-button" type="button" (click)="decrement()">
+          -
+        </button>
         <input
           class="form__input--number"
           type="number"
           value="1"
           id="passeggeri"
           formControlName="passeggeri"
+          readonly
           required
         />
-        <button type="button">+</button>
+        <button class="passengers-button" type="button" (click)="increment()">
+          +
+        </button>
       </div>
     </div>
   </div>
   <button
+    mat-raised-button
     class="submit"
     type="submit"
     [disabled]="!dataForm.valid"
