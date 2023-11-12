@@ -100,3 +100,14 @@
     Calcola
   </button>
 </form>
+
+<div *ngIf="errore" class="errore">
+  <mat-card>
+    <mat-card-content
+      ><span>Si è verificato un errore.</span>
+      <button mat-stroked-button (click)="chiudiErrore()">
+        Riprova
+      </button></mat-card-content
+    >
+  </mat-card>
+</div>

@@ -8,6 +8,7 @@ import { ResultsBoxComponent } from './components/results-box/results-box.compon
 import { MapComponent } from './components/map/map.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatExpansionModule,
     MatButtonModule,
+    MatCardModule,
   ],
 })
 export class FootprintModule {}

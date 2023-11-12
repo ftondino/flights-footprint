@@ -11,6 +11,7 @@
   flex-direction: column;
   gap: 3rem;
   text-align: center;
+  margin-bottom: 2.5rem;
 
   &__inputs {
     display: grid;
@@ -28,11 +29,12 @@
     margin-top: 5px;
 
     &--number {
-      width: 5%;
+      width: 10%;
       border: none;
       text-align: center;
       font-size: 1.5rem;
       color: #626262;
+
       &:focus {
         outline: none;
       }
@@ -70,15 +72,18 @@
   font-size: 3rem;
   font-weight: 550;
   color: #010c80;
+  cursor: pointer;
 }
 
 .drop-container {
   position: relative;
+  width: 100%;
 }
 
 .dropdown {
   display: none;
   position: absolute;
+  left: 10%;
   background-color: #ffffff;
   width: 80%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -104,4 +109,17 @@
 
 .animation {
   @include animation;
+}
+
+.errore {
+  background-color: white;
+  box-shadow: 0px 10px 11px -1px #43434357;
+  border-radius: 2px;
+
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.1rem;
+  }
 }

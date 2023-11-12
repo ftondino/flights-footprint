@@ -6,14 +6,16 @@ import {
   ElementRef,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { HttpRequestService } from '../../services/http-request.service';
 import { FootprintService } from '../../services/footprint.service';
-import { debounceTime, map, of, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, map, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-search-box',
@@ -25,6 +27,7 @@ export class SearchBoxComponent implements OnInit {
   filteredAirports: { [key: string]: any[] } = {};
   selectedAirports: { [key: string]: any } = {};
   @ViewChild('myForm') myForm!: ElementRef;
+  errore: boolean | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,8 +36,14 @@ export class SearchBoxComponent implements OnInit {
     private renderer: Renderer2
   ) {
     this.dataForm = this.formBuilder.group({
-      partenza: new FormControl('', Validators.required),
-      destinazione: new FormControl('', Validators.required),
+      partenza: new FormControl('', [
+        Validators.required,
+        this.airportValidator('partenza'),
+      ]),
+      destinazione: new FormControl('', [
+        Validators.required,
+        this.airportValidator('destinazione'),
+      ]),
       classe: new FormControl('', Validators.required),
       passeggeri: new FormControl(1, Validators.required),
     });
@@ -60,6 +69,15 @@ export class SearchBoxComponent implements OnInit {
         this.dataForm.controls['passeggeri'].value - 1
       );
     }
+  }
+
+  airportValidator(field: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const selected = this.selectedAirports[field];
+      return selected && selected.code === control.value
+        ? null
+        : { airportNotSelected: true };
+    };
   }
 
   setupAutocomplete(field: string) {
@@ -95,15 +113,28 @@ export class SearchBoxComponent implements OnInit {
         this.dataForm.value.destinazione,
         this.dataForm.value.classe
       )
-      .subscribe((data) => {
-        const additionalData = {
-          passeggeri: this.dataForm.value.passeggeri,
-          partenzaData: this.selectedAirports['partenza'],
-          destinazioneData: this.selectedAirports['destinazione'],
-        };
-        this.footprintService.updateTravel(data, additionalData);
+      .pipe(
+        catchError((error) => {
+          console.error('Si è verificato un errore:', error);
+          this.errore = true;
+          return of({ error: true } as any);
+        })
+      )
+      .subscribe((data: any) => {
+        if (data && !data.error) {
+          const additionalData = {
+            passeggeri: this.dataForm.value.passeggeri,
+            partenzaData: this.selectedAirports['partenza'],
+            destinazioneData: this.selectedAirports['destinazione'],
+          };
+          this.footprintService.updateTravel(data, additionalData);
+          this.renderer.addClass(this.myForm.nativeElement, 'animation');
+        }
       });
-    this.renderer.addClass(this.myForm.nativeElement, 'animation');
+  }
+
+  chiudiErrore() {
+    this.errore = false;
   }
 
   reset() {
@@ -111,7 +142,7 @@ export class SearchBoxComponent implements OnInit {
       partenza: '',
       destinazione: '',
       classe: '',
-      passeggeri: '',
+      passeggeri: 1,
     });
     this.renderer.removeClass(this.myForm.nativeElement, 'animation');
   }

@@ -1,20 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FootprintService } from '../../services/footprint.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-results-box',
   templateUrl: './results-box.component.html',
   styleUrls: ['./results-box.component.scss'],
 })
-export class ResultsBoxComponent implements OnInit {
+export class ResultsBoxComponent implements OnInit, OnDestroy {
   results: any;
+  private subscription: Subscription | undefined;
+
   constructor(private footprintService: FootprintService) {}
+
   ngOnInit() {
-    this.footprintService.currentTravel.subscribe((data) => {
-      if (data) {
-        this.results = data;
+    this.subscription = this.footprintService.currentTravel.subscribe(
+      (data) => {
+        if (data) {
+          this.results = data;
+        }
       }
-    });
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+    this.results = '';
+    console.log('ResultsBoxComponent has been destroyed');
   }
 
   newSearch() {
