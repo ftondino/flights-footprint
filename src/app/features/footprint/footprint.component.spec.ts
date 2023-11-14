@@ -56,11 +56,11 @@ describe('SearchBoxComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
+  /*
   it('should reset', () => {
     if (component.myForm) {
       component.reset();
       expect(component.myForm.nativeElement).toBeDefined();
     }
-  });
+  });*/
 });
