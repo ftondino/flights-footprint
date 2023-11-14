@@ -5,7 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResultsBoxComponent } from './components/results-box/results-box.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { FootprintComponent } from './footprint.component';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 describe('FootprintComponent', () => {
   let component: FootprintComponent;
   let fixture: ComponentFixture<FootprintComponent>;
@@ -18,7 +19,13 @@ describe('FootprintComponent', () => {
         SearchBoxComponent,
         ResultsBoxComponent,
       ],
-      imports: [HttpClientModule, HttpClientTestingModule],
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule,
+        MatExpansionModule,
+        ReactiveFormsModule,
+        FormsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FootprintComponent);
