@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SearchBoxComponent } from './search-box.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('SearchBoxComponent', () => {
   let component: SearchBoxComponent;
@@ -9,8 +9,8 @@ describe('SearchBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, ReactiveFormsModule],
       declarations: [SearchBoxComponent],
-      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchBoxComponent);

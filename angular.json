@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "flights-footprint:build:production"
+              "buildTarget": "flights-footprint:build:production"
             },
             "development": {
-              "browserTarget": "flights-footprint:build:development"
+              "buildTarget": "flights-footprint:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "flights-footprint:build"
+            "buildTarget": "flights-footprint:build"
           }
         },
         "test": {
