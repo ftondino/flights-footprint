@@ -1,3 +1,5 @@
+@import "/src/styles/mixins";
+@import "_variables.scss";
 .main {
   position: relative;
 }
@@ -12,6 +14,15 @@
   display: flex;
   align-items: center;
   padding: 15rem;
+
+  @include respond(tab-port) {
+    height: 90vh;
+    padding-top: 35rem;
+  }
+  @include respond(phone) {
+    height: 85vh;
+    padding: 4rem;
+  }
 
   &::before {
     content: "";
@@ -33,11 +44,11 @@
 
   &__desc {
     color: white;
-    font-size: 1.5rem;
+    font-size: $default-size;
   }
 
   &__content {
-    position: absolute;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,4 +64,7 @@
 
 button {
   width: 100%;
+  @include respond(tab-land) {
+    font-size: $small-size-2;
+  }
 }

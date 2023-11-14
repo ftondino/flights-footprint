@@ -1,4 +1,6 @@
-@import "_variables.scss";
+@import "/src/styles/variables";
+@import "/src/styles/mixins";
+
 mat-expansion-panel {
   position: absolute;
   bottom: 0;
@@ -12,6 +14,10 @@ mat-expansion-panel {
   &:not(.mat-expanded) {
     box-shadow: none;
   }
+  @include respond(phone) {
+    width: 45rem;
+    padding: 0;
+  }
 }
 
 .mat-expansion-panel {
@@ -22,31 +28,48 @@ mat-expansion-panel {
   padding: 2rem 3rem 2rem;
   display: flex;
   align-items: flex-start;
+  @include respond(phone) {
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+  }
 }
 
 .data-container {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 2.5rem;
   width: 75%;
   padding: 2rem;
+  @include respond(phone) {
+    width: 100%;
+    border-bottom: 0.1rem solid #e0e2e7;
+  }
   .data {
     display: flex;
     flex-direction: column;
-    width: 23%;
+    gap: 0.7rem;
+    width: 29%;
+    @include respond(phone) {
+      width: 25%;
+    }
     &__code {
-      font-size: 4.5rem;
-      font-weight: 500;
+      font-size: $bigger-size;
+      font-weight: $weight-big;
       color: $first-color;
     }
     &__country {
       color: $second-color;
-      font-size: 1.1rem;
+      font-size: $small-size;
     }
     &__divider {
       letter-spacing: 0.2rem;
       padding-bottom: 2rem;
       color: $second-color;
+      @include respond(phone) {
+        padding: 0;
+        font-size: $small-size;
+      }
     }
   }
 }
@@ -55,6 +78,9 @@ mat-expansion-panel {
   display: flex;
   flex-direction: column;
   border-left: 0.1rem solid #e0e2e7;
+  @include respond(phone) {
+    border: none;
+  }
   &__container {
     display: flex;
     align-items: center;
@@ -68,20 +94,20 @@ mat-expansion-panel {
     display: inline-block;
     width: 35%;
 
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: $small-size;
+    font-weight: $weight-big;
   }
 
   &__data {
-    font-size: 4.5rem;
-    font-weight: 500;
+    font-size: $bigger-size;
+    font-weight: $weight-big;
     color: $first-color;
     display: flex;
     flex-direction: column;
     &--unit {
       color: $second-color;
-      font-size: 1.1rem;
-      padding: 0.3rem;
+      font-size: $small-size;
+      padding: 0.5rem;
     }
   }
 }
@@ -90,4 +116,8 @@ button {
   position: absolute;
   bottom: 0;
   transform: translate(0%, -70%);
+  @include respond(phone) {
+    position: static;
+    transform: translate(0%, 0%);
+  }
 }

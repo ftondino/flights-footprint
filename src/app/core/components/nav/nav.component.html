@@ -4,7 +4,7 @@
       ><img class="logo" src="assets/logo/logo.png" alt=""
     /></a>
   </div>
-  <ul class="nav__list">
+  <ul class="nav__list nav-desktop">
     <li>
       <a class="nav__link" routerLink="home">Home</a>
     </li>
@@ -15,4 +15,15 @@
       <a class="nav__link" routerLink="contacts">Contatti</a>
     </li>
   </ul>
+
+  <div class="nav-mobile">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item routerLink="home">Home</button>
+      <button mat-menu-item routerLink="footprint">Footprint</button>
+      <button mat-menu-item routerLink="contacts">Contatti</button>
+    </mat-menu>
+  </div>
 </nav>

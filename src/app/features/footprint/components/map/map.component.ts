@@ -38,7 +38,6 @@ export class MapComponent implements OnInit {
     });
 
     this.footprintService.currentTravel.subscribe((data) => {
-      console.log(data);
       if (data) {
         let start = olProj.fromLonLat([
           data.partenzaData.lon,

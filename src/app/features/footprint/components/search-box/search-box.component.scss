@@ -1,11 +1,11 @@
-@import "_variables.scss";
-@import "_mixins.scss";
+@import "/src/styles/variables";
+@import "/src/styles/mixins";
 
 .form {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 2px;
-  max-width: 400px;
+  max-width: 40rem;
   box-shadow: 0px 10px 11px -1px #43434357;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@
       width: 10%;
       border: none;
       text-align: center;
-      font-size: 1.5rem;
+      font-size: $default-size;
       color: #626262;
 
       &:focus {
@@ -51,7 +51,7 @@
     display: block;
     margin: 1rem;
     text-align: left;
-    font-size: 1.1rem;
+    font-size: $small-size;
     color: #626262;
   }
 }
@@ -69,9 +69,9 @@
 .passengers-button {
   border: none;
   background: none;
-  font-size: 3rem;
-  font-weight: 550;
-  color: #010c80;
+  font-size: $big-size;
+  font-weight: $weight-bigger;
+  color: $fourth-color;
   cursor: pointer;
 }
 
@@ -89,10 +89,13 @@
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px;
   z-index: 2;
-
+  font-size: $small-size;
+  @include respond(phone) {
+    padding: 0;
+  }
   div {
     color: black;
-    padding: 12px 16px;
+    padding: 9px 12px;
     text-decoration: none;
     display: block;
 
@@ -120,6 +123,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 1.1rem;
+    font-size: $small-size;
   }
 }

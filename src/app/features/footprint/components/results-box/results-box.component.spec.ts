@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ResultsBoxComponent } from './results-box.component';
 
@@ -8,7 +10,8 @@ describe('ResultsBoxComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultsBoxComponent]
+      declarations: [ResultsBoxComponent],
+      imports: [HttpClientTestingModule, MatExpansionModule],
     });
     fixture = TestBed.createComponent(ResultsBoxComponent);
     component = fixture.componentInstance;

@@ -1,4 +1,5 @@
-@import "_variables.scss";
+@import "/src/styles/variables";
+@import "_mixins.scss";
 
 .nav {
   background-color: $third-color;
@@ -6,8 +7,8 @@
   align-items: center;
 
   .logo {
-    padding: 3rem;
-    width: 23rem;
+    padding: 2rem 2rem 2rem 3rem;
+    width: 27rem;
   }
 
   &__list {
@@ -17,12 +18,35 @@
     gap: 20rem;
     list-style: none;
     font-size: $default-size;
-    font-weight: 400;
+    font-weight: $weight-medium;
     padding: $default-size;
+
+    @include respond(tab-port) {
+      gap: 13rem;
+    }
+    @include respond(phone) {
+      display: none;
+    }
   }
 
   &__link {
     text-decoration: none;
     color: $second-color;
+  }
+}
+
+.nav-mobile {
+  mat-icon {
+    color: $fourth-color;
+  }
+  @include respond(big-desktop) {
+    display: none;
+  }
+
+  @include respond(phone) {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2rem;
   }
 }

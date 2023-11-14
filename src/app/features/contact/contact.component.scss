@@ -1,0 +1,76 @@
+@import "/src/styles/mixins";
+@import "_variables.scss";
+
+.container {
+  height: 84vh;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding: 5rem 0;
+  @include respond(tab-port) {
+    max-width: 90rem;
+    height: 90vh;
+  }
+
+  @include respond(phone) {
+    height: 85vh;
+    padding: 0;
+  }
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  column-gap: 8rem;
+  padding: 3rem;
+  @include respond(tab-port) {
+    column-gap: 5rem;
+  }
+
+  @include respond(phone) {
+    grid-template-columns: 1fr;
+    padding: 0;
+    gap: 5rem;
+  }
+
+  &__input {
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    color: #333;
+    padding: 1.1rem;
+    width: 100%;
+    outline: 0;
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  &__details {
+    padding: 6rem;
+    @include respond(phone) {
+      padding: 0 6rem;
+    }
+  }
+
+  &__txt {
+    background-color: #272343;
+    color: white;
+    border-radius: 5px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    @include respond(phone) {
+      gap: 2rem;
+    }
+  }
+
+  &__title {
+    font-size: $big-size;
+  }
+
+  &__desc {
+    font-size: $small-size-2;
+  }
+}

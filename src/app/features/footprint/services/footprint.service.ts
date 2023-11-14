@@ -47,5 +47,6 @@ export class FootprintService {
   resetTravelData() {
     this.resetSearchBox.next();
     this.resetMap.next();
+    this.travelData.next(null);
   }
 }

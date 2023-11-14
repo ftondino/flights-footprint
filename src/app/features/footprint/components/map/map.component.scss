@@ -1,3 +1,12 @@
+@import "/src/styles/mixins";
+
 #map {
   height: 84vh;
+  @include respond(tab-port) {
+    height: 90vh;
+  }
+
+  @include respond(phone) {
+    height: 85vh;
+  }
 }

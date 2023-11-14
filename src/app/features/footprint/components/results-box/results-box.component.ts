@@ -25,12 +25,12 @@ export class ResultsBoxComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
-    this.results = '';
-    console.log('ResultsBoxComponent has been destroyed');
+    this.results = null;
+    this.footprintService.resetTravelData();
   }
 
   newSearch() {
     this.footprintService.resetTravelData();
-    this.results = '';
+    this.results = null;
   }
 }

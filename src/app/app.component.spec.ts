@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { NavComponent } from './core/components/nav/nav.component';
+import { FooterComponent } from './core/components/footer/footer.component';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, MatIconModule],
+      declarations: [AppComponent, NavComponent, FooterComponent],
+    })
+  );
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -24,6 +29,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('flights-footprint app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain(
+      'flights-footprint app is running!'
+    );
   });
 });

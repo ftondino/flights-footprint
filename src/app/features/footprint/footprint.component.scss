@@ -1,3 +1,5 @@
+@import "/src/styles/mixins";
+
 div {
   position: relative;
 }
@@ -7,5 +9,8 @@ app-search-box {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 9999;
+  z-index: 1;
+  @include respond(phone) {
+    right: -25%;
+  }
 }
