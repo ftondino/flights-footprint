@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FootprintRoutingModule } from './footprint-routing.module';
 import { FootprintComponent } from './footprint.component';
@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
     MapComponent,
   ],
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     FootprintRoutingModule,
     MatExpansionModule,

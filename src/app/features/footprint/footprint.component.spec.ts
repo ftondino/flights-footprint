@@ -37,30 +37,3 @@ describe('FootprintComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-describe('SearchBoxComponent', () => {
-  let component: SearchBoxComponent;
-  let fixture: ComponentFixture<SearchBoxComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SearchBoxComponent],
-      imports: [HttpClientModule, HttpClientTestingModule],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(SearchBoxComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  /*
-  it('should reset', () => {
-    if (component.myForm) {
-      component.reset();
-      expect(component.myForm.nativeElement).toBeDefined();
-    }
-  });*/
-});
